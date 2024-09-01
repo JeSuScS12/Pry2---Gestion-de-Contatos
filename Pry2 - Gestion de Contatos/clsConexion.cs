@@ -19,7 +19,7 @@ namespace Pry2___Gestion_de_Contatos
 
         public clsConexion()
         {
-            cadena = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=./BD/Contactos.accdb";
+            cadena = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=./Contactos.accdb";
         }
 
         public void Conect()
@@ -106,6 +106,7 @@ namespace Pry2___Gestion_de_Contatos
                 if (result > 0)
                 {
                     MessageBox.Show("¡Contacto agregado con éxito!");
+                    conectar.Close();
                 }
                 else
                 {
@@ -116,7 +117,7 @@ namespace Pry2___Gestion_de_Contatos
             {
                 MessageBox.Show("Error" + error);
             }
-
+            
         }
     }
 }
