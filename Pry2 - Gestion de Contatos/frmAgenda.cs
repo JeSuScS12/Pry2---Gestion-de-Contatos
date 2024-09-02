@@ -39,7 +39,7 @@ namespace Pry2___Gestion_de_Contatos
             string numero = txtNumero.Text;
             string cat = cmbCategoria.Text;
 
-            nuevo.CargarContacto(nom, apel,correo,numero,cat);
+            nuevo.CargarContacto(nom, apel,correo,numero,cat,"Contactos");
             nuevo.LlenarTabla(dgvTabla);
             LimpiarTXT();
         }
@@ -78,7 +78,7 @@ namespace Pry2___Gestion_de_Contatos
             //---
             nuevo.CargarPapelera(nom, apel, correo, numero, cat);
 
-            nuevo.Eliminar(aux);
+            nuevo.Eliminar(aux,"Contactos");
             nuevo.LlenarTabla(dgvTabla);
 
             //Limpiar aux
@@ -95,7 +95,6 @@ namespace Pry2___Gestion_de_Contatos
 
         //Funciones
 
-        // Método para verificar qué TextBox están vacíos
         
         public void LimpiarTXT()
         {
@@ -105,6 +104,8 @@ namespace Pry2___Gestion_de_Contatos
             txtCorreo.Text = "";
             cmbCategoria.Text = "";
             cmbCateFiltro.Text = "";
+
+            nuevo.LlenarTabla(dgvTabla);
         }
 
         //AUX --> Global para guardar el numero que es una llave
@@ -193,11 +194,31 @@ namespace Pry2___Gestion_de_Contatos
 
         private void btnRest_Click(object sender, EventArgs e)
         {
+            string nom = lblNombre.Text;
+            string apel = lblApellido.Text;
+            string correo = lblCorreo.Text;
+            string numero = lblNumero.Text;
+            string cat = lblCategoria.Text;
+
+            aux = numero;
+
+            
+            nuevo.Eliminar(aux,"Papelera");
+            nuevo.CargarContacto(nom, apel, correo, numero, cat,"Papelera");
+            nuevo.LlenarPapelera(dgvPapelera);
+            nuevo.LlenarTabla(dgvTabla);
+
+            //Limpiar aux
+            aux = "";
+
             lblNombre.Text = "";
             lblApellido.Text = "";
             lblNumero.Text = "";
             lblCorreo.Text = "";
             lblCategoria.Text = "";
+
+
+
         }
     }
 }

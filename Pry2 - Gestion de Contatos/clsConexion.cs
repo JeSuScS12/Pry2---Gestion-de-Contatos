@@ -19,7 +19,7 @@ namespace Pry2___Gestion_de_Contatos
 
         public clsConexion()
         {
-            cadena = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=./Contactos.accdb";
+            cadena = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=../../BD/Contactos.accdb";
         }
 
         public void Conect()
@@ -111,7 +111,7 @@ namespace Pry2___Gestion_de_Contatos
         }
 
         //Ingresar Contactos nuevos a la lista   ---- Listo
-        public void CargarContacto(string nom, string ape, string correo, string numero, string categ)
+        public void CargarContacto(string nom, string ape, string correo, string numero, string categ, string tipo)
         {
             string consulta = $"insert into Contactos values('{nom}','{ape}','{numero}','{correo}','{categ}')";
             conectar = new OleDbConnection(cadena);
@@ -125,8 +125,12 @@ namespace Pry2___Gestion_de_Contatos
                 // Comprobar si se Agrego
                 if (result > 0)
                 {
-                    MessageBox.Show("¡Contacto agregado con éxito!");
-                    conectar.Close();
+                    if(tipo == "Contactos")
+                    {
+                        MessageBox.Show("¡Contacto agregado con éxito!");
+                        conectar.Close();
+                    }
+
                 }
                 else
                 {
@@ -169,9 +173,9 @@ namespace Pry2___Gestion_de_Contatos
             }
         }
 
-        public void Eliminar(string aux)
+        public void Eliminar(string aux, string tipo)
         {
-            string consulta = $"delete from Contactos  where numero = '{aux}'";  // <--- Cambiar numero
+            string consulta = $"delete from {tipo}  where numero = '{aux}'";  // <--- Cambiar numero
             conectar = new OleDbConnection(cadena);
 
             comando = new OleDbCommand(consulta, conectar);
@@ -183,9 +187,19 @@ namespace Pry2___Gestion_de_Contatos
                 // Comprobar si se Agrego
                 if (result > 0)
                 {
-                    MessageBox.Show("¡Contacto ELiminado con éxito!", "Notificacion");
-                    conectar.Close();
+
+                    if(tipo == "Contactos")
+                    {
+                        MessageBox.Show("¡Contacto Eliminado con éxito!", "Notificacion");
+                        conectar.Close();
+                    }
+                    else 
+                    {
+                        MessageBox.Show("¡Contacto Restaurado con éxito!", "Notificacion");
+                        conectar.Close();
+                    }
                 }
+                
                 else
                 {
                     MessageBox.Show("No se Elimino el Contacto.");
