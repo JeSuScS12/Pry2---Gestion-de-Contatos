@@ -28,7 +28,6 @@ namespace Pry2___Gestion_de_Contatos
             {
                 conectar = new OleDbConnection(cadena);
                 conectar.Open();
-                MessageBox.Show("Se conecto a BD");
             }
             catch (Exception x)
             {
@@ -44,6 +43,27 @@ namespace Pry2___Gestion_de_Contatos
             {
                 conectar.Open();
                 string consulta = "SELECT * FROM Contactos order by Nombre";
+
+                adaptador = new OleDbDataAdapter(consulta, conectar);
+                DataTable dataTable = new DataTable();
+
+                adaptador.Fill(dataTable);
+                tab.DataSource = dataTable;
+
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("Error" + error);
+            }
+        }
+
+        public void LlenarPapelera(DataGridView tab)
+        {
+            conectar = new OleDbConnection(cadena);
+            try
+            {
+                conectar.Open();
+                string consulta = "SELECT * FROM Papelera order by Nombre";
 
                 adaptador = new OleDbDataAdapter(consulta, conectar);
                 DataTable dataTable = new DataTable();
@@ -88,9 +108,9 @@ namespace Pry2___Gestion_de_Contatos
                 MessageBox.Show("Error" + error);
             }
 
-
         }
-        //Ingresar Productos nuevos a la lista   ---- Por hacer
+
+        //Ingresar Contactos nuevos a la lista   ---- Listo
         public void CargarContacto(string nom, string ape, string correo, string numero, string categ)
         {
             string consulta = $"insert into Contactos values('{nom}','{ape}','{numero}','{correo}','{categ}')";
@@ -117,7 +137,110 @@ namespace Pry2___Gestion_de_Contatos
             {
                 MessageBox.Show("Error" + error);
             }
-            
+        }
+
+        public void Modificar(string nom, string ape, string correo, string numero, string categ, string aux)
+        {
+
+
+            string consulta = $"update Contactos set Nombre = '{nom}' , Apellido ='{ape}' ,numero='{numero}' , correo ='{correo}' ,Categoria='{categ}'  where numero = '{aux}'";  // <--- Cambiar numero
+            conectar = new OleDbConnection(cadena);
+
+            comando = new OleDbCommand(consulta, conectar);
+            try
+            {
+                conectar.Open();
+
+                int result = comando.ExecuteNonQuery();
+                // Comprobar si se Agrego
+                if (result > 0)
+                {
+                    MessageBox.Show("¡Contacto modificado con éxito!", "Notificacion");
+                    conectar.Close();
+                }
+                else
+                {
+                    MessageBox.Show("No se modifico el Contacto.");
+                }
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("Error" + error);
+            }
+        }
+
+        public void Eliminar(string aux)
+        {
+            string consulta = $"delete from Contactos  where numero = '{aux}'";  // <--- Cambiar numero
+            conectar = new OleDbConnection(cadena);
+
+            comando = new OleDbCommand(consulta, conectar);
+            try
+            {
+                conectar.Open();
+
+                int result = comando.ExecuteNonQuery();
+                // Comprobar si se Agrego
+                if (result > 0)
+                {
+                    MessageBox.Show("¡Contacto ELiminado con éxito!", "Notificacion");
+                    conectar.Close();
+                }
+                else
+                {
+                    MessageBox.Show("No se Elimino el Contacto.");
+                }
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("Error" + error);
+            }
+        }
+
+        public void CargarPapelera(string nom, string ape, string correo, string numero, string categ)
+        {
+            string consulta = $"insert into Papelera values('{nom}','{ape}','{numero}','{correo}','{categ}')";
+            conectar = new OleDbConnection(cadena);
+
+            comando = new OleDbCommand(consulta, conectar);
+            try
+            {
+                conectar.Open();
+
+                int result = comando.ExecuteNonQuery();
+                // Comprobar si se Agrego
+                if (result > 0)
+                {
+                    conectar.Close();
+                }
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("Error" + error);
+            }
+        }
+
+
+        public void FiltrarCat(DataGridView tab, string item)
+        {
+            conectar = new OleDbConnection(cadena);
+            try
+            {
+                conectar.Open();
+                string consulta = $"SELECT * from Contactos where Categoria = '{item}'";
+
+                adaptador = new OleDbDataAdapter(consulta, conectar);
+                DataTable dataTable = new DataTable();
+
+
+                adaptador.Fill(dataTable);
+                tab.DataSource = dataTable;
+
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("Error" + error);
+            }
         }
     }
-}
+}   
