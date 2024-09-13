@@ -29,20 +29,28 @@ namespace Pry2___Gestion_de_Contatos
             btnModificar.Enabled = false;
         }
 
-        
+        private void frm_close(object sender, FormClosingEventArgs e)
+        {
+            nuevo.CargarCombo(cmbCategoria);
+        }
+
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            string nom = txtNom.Text;
-            string apel = txtApellido.Text;
-            string correo = txtCorreo.Text;
-            string numero = txtNumero.Text;
-            string cat = cmbCategoria.Text;
-
-            nuevo.CargarContacto(nom, apel,correo,numero,cat,"Contactos");
-            nuevo.LlenarTabla(dgvTabla);
-            LimpiarTXT();
+            frmAgregar ventana = new frmAgregar();
+            ventana.ShowDialog();
         }
+
+        //string nom = txtNom.Text;
+        //string apel = txtApellido.Text;
+        //string correo = txtCorreo.Text;
+        //string numero = txtNumero.Text;
+        //string cat = cmbCategoria.Text;
+
+        //nuevo.CargarContacto(nom, apel, correo, numero, cat,"Contactos");
+        //    nuevo.LlenarTabla(dgvTabla);
+        //    LimpiarTXT();
+    
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
@@ -50,13 +58,13 @@ namespace Pry2___Gestion_de_Contatos
             string apel = txtApellido.Text;
             string correo = txtCorreo.Text;
             string numero = txtNumero.Text;
-            string cat = cmbCategoria.Text;
+            int cat = cmbCategoria.SelectedIndex;
 
-            nuevo.Modificar(nom, apel, correo, numero, cat,aux);
+            nuevo.Modificar(nom, apel, correo, numero, cat+1,aux);
             nuevo.LlenarTabla(dgvTabla);
 
             //Limpiar aux
-            aux = "";
+            aux = "";           
 
             //Btns falsos
             btnAgregar.Enabled = true;
@@ -74,7 +82,7 @@ namespace Pry2___Gestion_de_Contatos
             string apel = txtApellido.Text;
             string correo = txtCorreo.Text;
             string numero = txtNumero.Text;
-            string cat = cmbCategoria.Text;
+            int cat = cmbCategoria.SelectedIndex;
             //---
             nuevo.CargarPapelera(nom, apel, correo, numero, cat);
 
@@ -128,7 +136,7 @@ namespace Pry2___Gestion_de_Contatos
                 string apellido = fila.Cells["Apellido"].Value.ToString();
                 string num = fila.Cells["Numero"].Value.ToString();
                 string correo = fila.Cells["Correo"].Value.ToString();
-                string cat = fila.Cells["Categoria"].Value.ToString();
+                string cat = fila.Cells["Relacion"].Value.ToString();
 
                 aux = fila.Cells["Numero"].Value.ToString();
 
@@ -179,7 +187,7 @@ namespace Pry2___Gestion_de_Contatos
                 string apellido = fila.Cells["Apellido"].Value.ToString();
                 string num = fila.Cells["Numero"].Value.ToString();
                 string correo = fila.Cells["Correo"].Value.ToString();
-                string cat = fila.Cells["Categoria"].Value.ToString();
+                string cat = fila.Cells["Relacion"].Value.ToString();
 
                 aux = fila.Cells["Numero"].Value.ToString();
 
@@ -204,7 +212,6 @@ namespace Pry2___Gestion_de_Contatos
 
             
             nuevo.Eliminar(aux,"Papelera");
-            nuevo.CargarContacto(nom, apel, correo, numero, cat,"Papelera");
             nuevo.LlenarPapelera(dgvPapelera);
             nuevo.LlenarTabla(dgvTabla);
 
@@ -218,6 +225,18 @@ namespace Pry2___Gestion_de_Contatos
             lblCategoria.Text = "";
 
 
+
+        }
+
+        private void btnAgregarCat_Click(object sender, EventArgs e)
+        {
+            frmAddCategoria catAdd = new frmAddCategoria();
+            catAdd.ShowDialog();
+            catAdd.FormClosing += frm_close;
+        }
+
+        private void dgvPapelera_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
         }
     }

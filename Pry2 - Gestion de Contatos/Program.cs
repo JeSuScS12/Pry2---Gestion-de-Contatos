@@ -16,7 +16,7 @@ namespace Pry2___Gestion_de_Contatos
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmAgenda());
+            Application.Run(new frmPrincipal());
         }
     }
 }

@@ -42,7 +42,8 @@ namespace Pry2___Gestion_de_Contatos
             try
             {
                 conectar.Open();
-                string consulta = "SELECT * FROM Contactos order by Nombre";
+                string consulta = "SELECT Contactos.Nombre as Nombre , Contactos.Apellido as Apellido, Contactos.Numero, Contactos.Correo, Categoria.NombreCat as Relacion  " +
+                                  "FROM Contactos INNER JOIN Categoria ON Categoria.IdCategoria = Contactos.Categoria order by Nombre;";
 
                 adaptador = new OleDbDataAdapter(consulta, conectar);
                 DataTable dataTable = new DataTable();
@@ -57,16 +58,17 @@ namespace Pry2___Gestion_de_Contatos
             }
         }
 
-        public void LlenarPapelera(DataGridView tab)
+        public void LlenarTabla2(DataGridView tab, string item)
         {
             conectar = new OleDbConnection(cadena);
             try
             {
                 conectar.Open();
-                string consulta = "SELECT * FROM Papelera order by Nombre";
+                string consulta = $"SELECT Contactos.Nombre as Nombre , Contactos.Apellido as Apellido, Contactos.Numero, Contactos.Correo, Categoria.NombreCat as Relacion    FROM Contactos INNER JOIN Categoria ON Categoria.IdCategoria = Contactos.Categoria  where Categoria.NombreCat = '{item}'";
 
                 adaptador = new OleDbDataAdapter(consulta, conectar);
                 DataTable dataTable = new DataTable();
+
 
                 adaptador.Fill(dataTable);
                 tab.DataSource = dataTable;
@@ -78,26 +80,21 @@ namespace Pry2___Gestion_de_Contatos
             }
         }
 
-        //Llenar Combo
-
-        public void CargarCombo(ComboBox comboBox)
+        public void LlenarNombre(DataGridView tabla)
         {
             conectar = new OleDbConnection(cadena);
             try
             {
                 conectar.Open();
-                string consulta = "SELECT DISTINCT Categoria FROM Contactos";
+                string consulta = "SELECT  Nombre,  Apellido, numero, correo,Categoria  FROM Contactos";
 
                 comando = new OleDbCommand(consulta, conectar);
                 OleDbDataReader reader = comando.ExecuteReader();
 
-                // Limpia los items del ComboBox antes de agregar nuevos datos
-                comboBox.Items.Clear();
 
                 // Agrega los datos al ComboBox
                 while (reader.Read())
                 {
-                    comboBox.Items.Add(reader["Categoria"].ToString());
                 }
 
                 reader.Close();
@@ -110,10 +107,42 @@ namespace Pry2___Gestion_de_Contatos
 
         }
 
-        //Ingresar Contactos nuevos a la lista   ---- Listo
-        public void CargarContacto(string nom, string ape, string correo, string numero, string categ, string tipo)
+
+        public void LlenarCat(TreeView arbol)
         {
-            string consulta = $"insert into Contactos values('{nom}','{ape}','{numero}','{correo}','{categ}')";
+            conectar = new OleDbConnection(cadena);
+            try
+            {
+                conectar.Open();
+                string consulta = "SELECT  NombreCat  FROM Categoria";
+
+                comando = new OleDbCommand(consulta, conectar);
+                OleDbDataReader reader = comando.ExecuteReader();
+
+                // Limpia los items del ComboBox antes de agregar nuevos datos
+                arbol.Nodes.Clear();
+
+                // Agrega los datos al ComboBox
+                while (reader.Read())
+                {
+                    string nombre = reader.GetString(0);
+
+                    arbol.Nodes.Add(nombre);
+                }
+
+                reader.Close();
+
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("Error" + error);
+            }
+
+        }
+
+        public void CargarCat(string categ)
+        {
+            string consulta = $"insert into Categoria (NombreCat) values('{categ}')";
             conectar = new OleDbConnection(cadena);
 
             comando = new OleDbCommand(consulta, conectar);
@@ -125,12 +154,7 @@ namespace Pry2___Gestion_de_Contatos
                 // Comprobar si se Agrego
                 if (result > 0)
                 {
-                    if(tipo == "Contactos")
-                    {
-                        MessageBox.Show("¡Contacto agregado con éxito!");
-                        conectar.Close();
-                    }
-
+                    conectar.Close();
                 }
                 else
                 {
@@ -143,7 +167,146 @@ namespace Pry2___Gestion_de_Contatos
             }
         }
 
-        public void Modificar(string nom, string ape, string correo, string numero, string categ, string aux)
+
+        public void LlenarPapelera(DataGridView tab)
+        {
+            conectar = new OleDbConnection(cadena);
+            try
+            {
+                conectar.Open();
+                string consulta = "SELECT Papelera.Nombre as Nombre , Papelera.Apellido as Apellido, Papelera.Numero, Papelera.Correo, Papelera.Categoria as Relacion  " +
+                                  "FROM Papelera INNER JOIN Categoria ON Categoria.IdCategoria = Papelera.Categoria order by Nombre;";
+
+                adaptador = new OleDbDataAdapter(consulta, conectar);
+                DataTable dataTable = new DataTable();
+
+                adaptador.Fill(dataTable);
+                tab.DataSource = dataTable;
+
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("Error" + error);
+            }
+        }
+
+
+
+
+
+        //Llenar Combo
+
+        public void CargarCombo(ComboBox comboBox)
+        {
+            conectar = new OleDbConnection(cadena);
+            try
+            {
+                conectar.Open();
+                string consulta = "SELECT  NombreCat FROM Categoria";
+
+                comando = new OleDbCommand(consulta, conectar);
+                OleDbDataReader reader = comando.ExecuteReader();
+
+                // Limpia los items del ComboBox antes de agregar nuevos datos
+                comboBox.Items.Clear();
+
+                // Agrega los datos al ComboBox
+                while (reader.Read())
+                {
+                    comboBox.Items.Add(reader["NombreCat"].ToString());
+                }
+
+                reader.Close();
+
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("Error" + error);
+            }
+
+        }
+
+        //Agregar Categoria y Llenar tabla
+        public void LlenarTabCat(DataGridView tabla)
+        {
+            conectar = new OleDbConnection(cadena);
+            try
+            {
+                conectar.Open();
+                string consulta = "select IdCategoria as Id, NombreCat as Relacion from Categoria";
+
+                adaptador = new OleDbDataAdapter(consulta, conectar);
+                DataTable dataTable = new DataTable();
+
+                adaptador.Fill(dataTable);
+                tabla.DataSource = dataTable;
+
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("Error" + error);
+            }
+        }
+        public void CargarCats(string item)
+        {
+            string consulta = $"insert into Categoria(NombreCat) values('{item}')";
+            conectar = new OleDbConnection(cadena);
+
+            comando = new OleDbCommand(consulta, conectar);
+            try
+            {
+                conectar.Open();
+
+                int result = comando.ExecuteNonQuery();
+                // Comprobar si se Agrego
+                if (result > 0)
+                {
+                    MessageBox.Show("¡Categoria agregada con éxito!");
+                    conectar.Close();
+                }
+                else
+                {
+                    MessageBox.Show("No se agregó la Categoria.");
+                }
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("Error" + error);
+            }
+        }
+
+
+        //Ingresar Contactos nuevos a la lista   ---- Listo
+        public void CargarContacto(string nom, string ape, string correo, string numero, int tipo)
+        {
+            string consulta = $"insert into Contactos values('{nom}','{ape}','{numero}','{correo}', {tipo})";
+            conectar = new OleDbConnection(cadena);
+
+            comando = new OleDbCommand(consulta, conectar);
+            try
+            {
+                conectar.Open();
+
+                int result = comando.ExecuteNonQuery();
+
+                // Comprobar si se Agrego
+                if (result > 0)
+                {
+                    MessageBox.Show("¡Contacto agregado con éxito!");
+                    conectar.Close();
+                }
+                else
+                {
+                    MessageBox.Show("No se agregó el Contacto.");
+                }
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("Error" + error);
+            }
+        }
+
+        public void Modificar(string nom, string ape, string correo, string numero, int categ, string aux)
         {
 
 
@@ -211,9 +374,9 @@ namespace Pry2___Gestion_de_Contatos
             }
         }
 
-        public void CargarPapelera(string nom, string ape, string correo, string numero, string categ)
+        public void CargarPapelera(string nom, string ape, string correo, string numero, int categ)
         {
-            string consulta = $"insert into Papelera values('{nom}','{ape}','{numero}','{correo}','{categ}')";
+            string consulta = $"insert into Papelera values('{nom}','{ape}','{numero}','{correo}',{categ})";
             conectar = new OleDbConnection(cadena);
 
             comando = new OleDbCommand(consulta, conectar);
@@ -241,7 +404,8 @@ namespace Pry2___Gestion_de_Contatos
             try
             {
                 conectar.Open();
-                string consulta = $"SELECT * from Contactos where Categoria = '{item}'";
+                string consulta = "SELECT Contactos.Nombre, Contactos.Apellido, Contactos.Numero, Contactos.Correo, Categoria.NombreCat as Relacion  " +
+                                  $"FROM Contactos INNER JOIN Categoria ON Categoria.IdCategoria = Contactos.Categoria WHERE Relacion = '{item}';";
 
                 adaptador = new OleDbDataAdapter(consulta, conectar);
                 DataTable dataTable = new DataTable();

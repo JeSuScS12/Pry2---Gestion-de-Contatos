@@ -30,6 +30,8 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnAgregarCat = new System.Windows.Forms.Button();
             this.grb = new System.Windows.Forms.GroupBox();
             this.cmbCateFiltro = new System.Windows.Forms.ComboBox();
             this.btnLimpiar = new System.Windows.Forms.Button();
@@ -83,6 +85,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.panel1);
+            this.tabPage1.Controls.Add(this.btnAgregarCat);
             this.tabPage1.Controls.Add(this.grb);
             this.tabPage1.Controls.Add(this.btnLimpiar);
             this.tabPage1.Controls.Add(this.groupBox1);
@@ -106,6 +110,27 @@
             this.tabPage1.Text = "Agregar - Modificar - Eliminar";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.DimGray;
+            this.panel1.Location = new System.Drawing.Point(301, 24);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(3, 206);
+            this.panel1.TabIndex = 54;
+            // 
+            // btnAgregarCat
+            // 
+            this.btnAgregarCat.BackColor = System.Drawing.Color.Gray;
+            this.btnAgregarCat.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAgregarCat.ForeColor = System.Drawing.Color.White;
+            this.btnAgregarCat.Location = new System.Drawing.Point(193, 199);
+            this.btnAgregarCat.Name = "btnAgregarCat";
+            this.btnAgregarCat.Size = new System.Drawing.Size(91, 38);
+            this.btnAgregarCat.TabIndex = 53;
+            this.btnAgregarCat.Text = "Agregar Categoria";
+            this.btnAgregarCat.UseVisualStyleBackColor = false;
+            this.btnAgregarCat.Click += new System.EventHandler(this.btnAgregarCat_Click);
+            // 
             // grb
             // 
             this.grb.Controls.Add(this.cmbCateFiltro);
@@ -127,9 +152,9 @@
             "Escuela",
             "Amigos",
             "Otro"});
-            this.cmbCateFiltro.Location = new System.Drawing.Point(41, 25);
+            this.cmbCateFiltro.Location = new System.Drawing.Point(57, 25);
             this.cmbCateFiltro.Name = "cmbCateFiltro";
-            this.cmbCateFiltro.Size = new System.Drawing.Size(164, 23);
+            this.cmbCateFiltro.Size = new System.Drawing.Size(139, 23);
             this.cmbCateFiltro.TabIndex = 53;
             this.cmbCateFiltro.SelectedIndexChanged += new System.EventHandler(this.cmbCateFiltro_SelectedIndexChanged);
             // 
@@ -137,7 +162,8 @@
             // 
             this.btnLimpiar.BackColor = System.Drawing.Color.Gray;
             this.btnLimpiar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLimpiar.Location = new System.Drawing.Point(193, 207);
+            this.btnLimpiar.ForeColor = System.Drawing.Color.White;
+            this.btnLimpiar.Location = new System.Drawing.Point(52, 207);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(91, 27);
             this.btnLimpiar.TabIndex = 50;
@@ -210,7 +236,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(49, 58);
+            this.label2.Location = new System.Drawing.Point(49, 61);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 16);
             this.label2.TabIndex = 46;
@@ -274,13 +300,13 @@
             // 
             // btnAgregar
             // 
-            this.btnAgregar.BackColor = System.Drawing.Color.LawnGreen;
+            this.btnAgregar.BackColor = System.Drawing.Color.GreenYellow;
             this.btnAgregar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAgregar.Location = new System.Drawing.Point(327, 24);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(248, 33);
             this.btnAgregar.TabIndex = 8;
-            this.btnAgregar.Text = "Agregar";
+            this.btnAgregar.Text = "Agregar Contacto";
             this.btnAgregar.UseVisualStyleBackColor = false;
             this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
             // 
@@ -447,6 +473,7 @@
             this.dgvPapelera.Size = new System.Drawing.Size(546, 221);
             this.dgvPapelera.TabIndex = 39;
             this.dgvPapelera.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPapelera_CellClick);
+            this.dgvPapelera.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPapelera_CellContentClick);
             // 
             // frmAgenda
             // 
@@ -508,5 +535,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button btnRest;
         private System.Windows.Forms.Label lblCategoria;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnAgregarCat;
     }
 }
